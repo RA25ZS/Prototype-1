@@ -9,6 +9,7 @@ namespace Prototype
     {
         [SerializeField] float movementSpeed = 5f;
         PlayerController playerController;
+        Camera mainCamera;
 
         private void Awake()
         {
@@ -16,10 +17,28 @@ namespace Prototype
         }
         void Start()
         {
-        
+            mainCamera = Camera.main;
         }
 
         void Update()
+        {
+            MovePlayer();
+            FollowMousePos();
+        }
+
+        private void FollowMousePos()
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+
+            if (groundPlane.Raycast(ray, out float rayDistance))
+            {
+                Vector3 point = ray.GetPoint(rayDistance);
+                playerController.LookAt(point);
+            }
+        }
+
+        private void MovePlayer()
         {
             var horizontal = Input.GetAxisRaw("Horizontal");
             var vertical = Input.GetAxisRaw("Vertical");

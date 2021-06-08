@@ -19,6 +19,12 @@ namespace Prototype
         
         }
 
+        public void LookAt(Vector3 lookPos)
+        {
+            Vector3 heightPoint = new Vector3(lookPos.x, transform.position.y, lookPos.z);
+            transform.LookAt(heightPoint);
+        }
+
         public void Move(Vector3 _velocity)
         {
             velocity = _velocity;
